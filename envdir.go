@@ -2,14 +2,13 @@ package envdir
 
 import (
 	"io/ioutil"
-	"os"
 	"os/exec"
 	"fmt"
 )
 
 func ReadDir(dir string) (map[string]string, error) {
-	envVariables := make(map[string]string{})
-	directoryFiles, error = ioutil.ReadDir(dir)
+	envVariables := make(map[string]string)
+	directoryFiles, error := ioutil.ReadDir(dir)
 	if error != nil {
 		return envVariables, error
 	}
@@ -24,7 +23,7 @@ func ReadDir(dir string) (map[string]string, error) {
 }
 
 func RunCmd(cmd []string, env map[string]string) int {
-	commandParameters := make([]string{})
+	commandParameters := make([]string)
 	commandParameters = append(commandParameters, "env")
 	for paramName, paramValue := range env {
 		commandParameters = append(commandParameters, string(paramName)+"="+string(paramValue))
@@ -34,5 +33,10 @@ func RunCmd(cmd []string, env map[string]string) int {
 	}
 	fmt.Printf("%v\n", commandParameters)
 	command := exec.Command(commandParameters)
-	return command.Run()
+	if err := command.Run(); err != nil {
+		if exitError, ok := err.(*exec.ExitError); ok {
+			return exitError.ExitCode()
+		}
+	}
+	return 0
 }
