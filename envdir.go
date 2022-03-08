@@ -13,7 +13,7 @@ func ReadDir(dir string) (map[string]string, error) {
 		return envVariables, error
 	}
 	for _, file := range directoryFiles {
-		fileInner, error := ioutil.ReadFile(file.Name())
+		fileInner, error := ioutil.ReadFile(string(dir) + "\\" + file.Name())
 		if error != nil {
 			return envVariables, error
 		}
