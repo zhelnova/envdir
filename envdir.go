@@ -31,7 +31,7 @@ func RunCmd(cmd []string, env map[string]string) int {
 		commandParameters = append(commandParameters, string(commandPiece))
 	}
 	fmt.Printf("%v\n", commandParameters)
-	command := exec.Command("env", commandParameters)
+	command := exec.Command("env", commandParameters...)
 	if err := command.Run(); err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
 			return exitError.ExitCode()
