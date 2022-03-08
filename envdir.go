@@ -13,7 +13,7 @@ func ReadDir(dir string) (map[string]string, error) {
 		return envVariables, error
 	}
 	for _, file := range directoryFiles {
-		fileInner, error := ioutil.ReadFile(file.Name)
+		fileInner, error := ioutil.ReadFile(file.Name())
 		if error != nil {
 			return envVariables, error
 		}
@@ -23,7 +23,7 @@ func ReadDir(dir string) (map[string]string, error) {
 }
 
 func RunCmd(cmd []string, env map[string]string) int {
-	commandParameters := make([]string)
+	commandParameters := make([]string, 10)
 	commandParameters = append(commandParameters, "env")
 	for paramName, paramValue := range env {
 		commandParameters = append(commandParameters, string(paramName)+"="+string(paramValue))
