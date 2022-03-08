@@ -24,7 +24,6 @@ func ReadDir(dir string) (map[string]string, error) {
 
 func RunCmd(cmd []string, env map[string]string) int {
 	commandParameters := make([]string, 10)
-	commandParameters = append(commandParameters, "env")
 	for paramName, paramValue := range env {
 		commandParameters = append(commandParameters, string(paramName)+"="+string(paramValue))
 	}
@@ -32,7 +31,7 @@ func RunCmd(cmd []string, env map[string]string) int {
 		commandParameters = append(commandParameters, string(commandPiece))
 	}
 	fmt.Printf("%v\n", commandParameters)
-	command := exec.Command(commandParameters)
+	command := exec.Command("env", commandParameters)
 	if err := command.Run(); err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
 			return exitError.ExitCode()
